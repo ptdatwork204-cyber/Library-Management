@@ -39,4 +39,10 @@ public class BookRepository {
         books.remove(book);
         return true;
     }
+
+    public void setBooks(List<Book> books) {
+        this.books.clear();
+        this.books.addAll(books);
+    }
 }
+

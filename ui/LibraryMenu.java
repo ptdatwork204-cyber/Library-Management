@@ -25,6 +25,8 @@ public class LibraryMenu {
             System.out.println("3. Update Book");
             System.out.println("4. Delete Book");
             System.out.println("5. Search Book");
+            System.out.println("6. Save Book");   
+            System.out.println("7. Load Book");
             System.out.println("0. Exit");
 
             System.out.print("Choose: ");
@@ -51,6 +53,14 @@ public class LibraryMenu {
 
                 case 5:
                     service.searchBook();
+                    break;
+                
+                case 6:
+                    service.saveBooks();
+                    break;
+
+                case 7:
+                    service.loadBooks();
                     break;
 
                 case 0:

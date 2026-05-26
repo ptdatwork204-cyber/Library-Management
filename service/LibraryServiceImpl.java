@@ -2,6 +2,8 @@ package service;
 
 import model.Book;
 import repository.BookRepository;
+import storage.StorageStrategy;
+import storage.TextFileStorage;
 
 import java.util.List;
 import java.util.Scanner;
@@ -10,10 +12,12 @@ public class LibraryServiceImpl implements LibraryService {
 
     private final BookRepository repository;
     private final Scanner scanner;
+    private final StorageStrategy storage;
 
     public LibraryServiceImpl() {
         repository = new BookRepository();
         scanner = new Scanner(System.in);
+        storage = new TextFileStorage(); // change strategy here
     }
 
     @Override
@@ -22,7 +26,6 @@ public class LibraryServiceImpl implements LibraryService {
         System.out.print("Enter book id: ");
         int id = Integer.parseInt(scanner.nextLine());
 
-        // check duplicate id
         if (repository.findById(id) != null) {
             System.out.println("Book id already exists!");
             return;
@@ -34,11 +37,9 @@ public class LibraryServiceImpl implements LibraryService {
         System.out.print("Enter author: ");
         String author = scanner.nextLine();
 
-        Book book = new Book(id, title, author);
+        repository.add(new Book(id, title, author));
 
-        repository.add(book);
-
-        System.out.println("Add book successfully!");
+        System.out.println("Added successfully!");
     }
 
     @Override
@@ -51,66 +52,67 @@ public class LibraryServiceImpl implements LibraryService {
             return;
         }
 
-        System.out.println("\n===== BOOK LIST =====");
-
-        for (Book book : books) {
-            System.out.println(book);
+        for (Book b : books) {
+            System.out.println(b);
         }
     }
 
     @Override
     public void updateBook() {
 
-        System.out.print("Enter book id to update: ");
-        int id = Integer.parseInt(scanner.nextLine());
-
-        Book existingBook = repository.findById(id);
-
-        if (existingBook == null) {
-            System.out.println("Book not found!");
-            return;
-        }
-
-        System.out.print("Enter new title: ");
-        String newTitle = scanner.nextLine();
-
-        System.out.print("Enter new author: ");
-        String newAuthor = scanner.nextLine();
-
-        existingBook.setTitle(newTitle);
-        existingBook.setAuthor(newAuthor);
-
-        System.out.println("Update successfully!");
-    }
-
-    @Override
-    public void deleteBook() {
-
-        System.out.print("Enter id to delete: ");
-        int id = Integer.parseInt(scanner.nextLine());
-
-        boolean deleted = repository.delete(id);
-
-        if (deleted) {
-            System.out.println("Delete successfully!");
-        } else {
-            System.out.println("Book not found!");
-        }
-    }
-
-    @Override
-    public void searchBook() {
-
-        System.out.print("Enter id to search: ");
+        System.out.print("Enter id: ");
         int id = Integer.parseInt(scanner.nextLine());
 
         Book book = repository.findById(id);
 
         if (book == null) {
-            System.out.println("Book not found!");
+            System.out.println("Not found!");
             return;
         }
 
-        System.out.println(book);
+        System.out.print("New title: ");
+        book.setTitle(scanner.nextLine());
+
+        System.out.print("New author: ");
+        book.setAuthor(scanner.nextLine());
+
+        System.out.println("Updated!");
+    }
+
+    @Override
+    public void deleteBook() {
+
+        System.out.print("Enter id: ");
+        int id = Integer.parseInt(scanner.nextLine());
+
+        repository.delete(id);
+
+        System.out.println("Deleted!");
+    }
+
+    @Override
+    public void searchBook() {
+
+        System.out.print("Enter keyword: ");
+        String keyword = scanner.nextLine().toLowerCase();
+
+        for (Book b : repository.findAll()) {
+            if (b.getTitle().toLowerCase().contains(keyword)) {
+                System.out.println(b);
+            }
+        }
+    }
+
+    @Override
+    public void saveBooks() {
+        storage.save(repository.findAll());
+        System.out.println("Saved!");
+    }
+
+    @Override
+    public void loadBooks() {
+        List<Book> books = storage.load();
+        repository.setBooks(books);
+        System.out.println("Loaded!");
     }
 }

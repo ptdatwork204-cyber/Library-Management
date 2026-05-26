@@ -1,6 +1,7 @@
 package service;
 
 public interface LibraryService {
+
     void addBook();
 
     void viewBooks();
@@ -10,4 +11,8 @@ public interface LibraryService {
     void deleteBook();
 
     void searchBook();
+
+    void saveBooks();
+
+    void loadBooks();
 }
