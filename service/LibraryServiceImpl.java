@@ -1,5 +1,5 @@
 package service;
-
+import storage.ExcelFileStorage;
 import model.Book;
 import repository.BookRepository;
 import storage.StorageStrategy;
@@ -13,11 +13,13 @@ public class LibraryServiceImpl implements LibraryService {
     private final BookRepository repository;
     private final Scanner scanner;
     private final StorageStrategy storage;
+    
 
     public LibraryServiceImpl() {
         repository = new BookRepository();
         scanner = new Scanner(System.in);
         storage = new TextFileStorage(); // change strategy here
+        
     }
 
     @Override
@@ -105,14 +107,67 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public void saveBooks() {
+
+        System.out.println("\n===== SAVE OPTIONS =====");
+        System.out.println("1. Save to Text File");
+        System.out.println("2. Save to Excel File");
+
+        System.out.print("Choose: ");
+        int choice = Integer.parseInt(scanner.nextLine());
+
+        StorageStrategy storage;
+
+        switch (choice) {
+
+            case 1:
+                storage = new TextFileStorage();
+                break;
+
+            case 2:
+                storage = new ExcelFileStorage();
+                break;
+
+            default:
+                System.out.println("Invalid choice!");
+                return;
+        }
+
         storage.save(repository.findAll());
-        System.out.println("Saved!");
+
+        System.out.println("Saved successfully!");
     }
 
     @Override
     public void loadBooks() {
+
+        System.out.println("\n===== LOAD OPTIONS =====");
+        System.out.println("1. Load from Text File");
+        System.out.println("2. Load from Excel File");
+
+        System.out.print("Choose: ");
+        int choice = Integer.parseInt(scanner.nextLine());
+
+        StorageStrategy storage;
+
+        switch (choice) {
+
+            case 1:
+                storage = new TextFileStorage();
+                break;
+
+            case 2:
+                storage = new ExcelFileStorage();
+                break;
+
+            default:
+                System.out.println("Invalid choice!");
+                return;
+        }
+
         List<Book> books = storage.load();
+
         repository.setBooks(books);
-        System.out.println("Loaded!");
+
+        System.out.println("Loaded successfully!");
     }
 }
