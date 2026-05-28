@@ -1,7 +1,12 @@
 package ui;
-
+import repository.BookRepository;
+import repository.InMemoryBookRepository;
 import service.LibraryService;
 import service.LibraryServiceImpl;
+import storage.MemoryStorage;
+import storage.StorageStrategy;
+import storage.TextFileStorage;
+import storage.ExcelFileStorage;
 
 import java.util.Scanner;
 
@@ -11,10 +16,47 @@ public class LibraryMenu {
     private final Scanner scanner;
 
     public LibraryMenu() {
-        service = new LibraryServiceImpl();
-        scanner = new Scanner(System.in);
-    }
 
+    scanner = new Scanner(System.in);
+
+    System.out.println("===== STORAGE OPTIONS =====");
+    System.out.println("1. Memory");
+    System.out.println("2. Text File");
+    System.out.println("3. Excel File");
+
+    System.out.print("Choose storage: ");
+
+    int choice = Integer.parseInt(scanner.nextLine());
+
+    StorageStrategy storage;
+
+    switch (choice) {
+
+    case 1:
+        storage = new MemoryStorage();
+        break;
+
+    case 2:
+        storage = new TextFileStorage();
+        break;
+
+    case 3:
+        storage = new ExcelFileStorage();
+        break;
+
+    default:
+        System.out.println("Invalid choice!");
+        storage = new MemoryStorage();
+}
+
+    BookRepository repository = new InMemoryBookRepository();
+    service = new LibraryServiceImpl(
+        repository,
+        storage
+);
+
+    service.loadBooks();
+}
     public void start() {
 
         while (true) {
@@ -26,7 +68,6 @@ public class LibraryMenu {
             System.out.println("4. Delete Book");
             System.out.println("5. Search Book");
             System.out.println("6. Save Book");   
-            System.out.println("7. Load Book");
             System.out.println("0. Exit");
 
             System.out.print("Choose: ");
@@ -57,10 +98,6 @@ public class LibraryMenu {
                 
                 case 6:
                     service.saveBooks();
-                    break;
-
-                case 7:
-                    service.loadBooks();
                     break;
 
                 case 0:
