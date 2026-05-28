@@ -5,7 +5,7 @@ Basic console app quản lý thư viện
 
 -  OOP
 -  CRUD
--  MVC structure
+-  MVC structure (not quite lol)
 -  File I/O
 -  Interface
 -  Strategy Pattern
