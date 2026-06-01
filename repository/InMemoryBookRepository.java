@@ -46,4 +46,19 @@ public class InMemoryBookRepository
         this.books.clear();
         this.books.addAll(books);
     }
+    
+    @Override
+    public void update(Book book) {
+
+    for (int i = 0; i < books.size(); i++) {
+
+        if (books.get(i).getId() == book.getId()) {
+
+            books.set(i, book);
+
+            return;
+        }
+    }
+}
+
 }

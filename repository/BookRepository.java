@@ -14,5 +14,9 @@ public interface BookRepository {
 
     void delete(int id);
 
+    void update(Book book);
+
     void setBooks(List<Book> books);
+
+   
 }

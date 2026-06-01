@@ -83,6 +83,8 @@ public class LibraryServiceImpl implements LibraryService {
         System.out.print("New author: ");
         book.setAuthor(scanner.nextLine());
 
+        repository.update(book);
+
         System.out.println("Updated!");
     }
 

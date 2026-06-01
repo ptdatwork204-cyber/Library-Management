@@ -1,12 +1,14 @@
 package ui;
 import repository.BookRepository;
 import repository.InMemoryBookRepository;
+import repository.PostgresBookRepository;
 import service.LibraryService;
 import service.LibraryServiceImpl;
 import storage.MemoryStorage;
 import storage.StorageStrategy;
 import storage.TextFileStorage;
 import storage.ExcelFileStorage;
+import repository.PostgresBookRepository;
 
 import java.util.Scanner;
 
@@ -23,6 +25,7 @@ public class LibraryMenu {
     System.out.println("1. Memory");
     System.out.println("2. Text File");
     System.out.println("3. Excel File");
+    System.out.println("4. PostgreSQL");
 
     System.out.print("Choose storage: ");
 
@@ -32,30 +35,47 @@ public class LibraryMenu {
 
     switch (choice) {
 
-    case 1:
-        storage = new MemoryStorage();
-        break;
+        case 1:
+            storage = new MemoryStorage();
+            break;
 
-    case 2:
-        storage = new TextFileStorage();
-        break;
+        case 2:
+            storage = new TextFileStorage();
+            break;
 
-    case 3:
-        storage = new ExcelFileStorage();
-        break;
+        case 3:
+            storage = new ExcelFileStorage();
+            break;
 
-    default:
-        System.out.println("Invalid choice!");
-        storage = new MemoryStorage();
-}
+        case 4:
+            storage = new MemoryStorage();
+            break;
 
-    BookRepository repository = new InMemoryBookRepository();
+        default:
+            System.out.println("Invalid choice!");
+            storage = new MemoryStorage();
+    }
+
+    BookRepository repository;
+
+    if (choice == 4) {
+
+        repository = new PostgresBookRepository();
+
+    } else {
+
+        repository = new InMemoryBookRepository();
+    }
+
     service = new LibraryServiceImpl(
-        repository,
-        storage
-);
+            repository,
+            storage
+    );
 
-    service.loadBooks();
+    if (!(repository instanceof PostgresBookRepository)) {
+
+        service.loadBooks();
+    }
 }
     public void start() {
 
