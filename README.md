@@ -29,12 +29,6 @@ Cách chạy project
 - Bước 1. Compile : javac -cp ".;libs/*" -d bin Main.java ui\*.java service\*.java repository\*.java model\*.java storage\*.jav
 - Bước 2. Chạy : java -cp "bin;libs/*" Main
 
-Note: 
--  Dữ liệu sẽ mất khi tắt chương trình nếu chưa save.
--  File Excel yêu cầu Apache POI.
-
-
-
 ---
 # Update 
 -  Đã thêm tầng lưu trữ dữ liệu sử dụng JDBC:
