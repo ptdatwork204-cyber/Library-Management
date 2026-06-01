@@ -9,8 +9,8 @@ Basic console app quản lý thư viện
 -  MVC structure
 -  File I/O
 -  Interface
--  Strategy Pattern
--  Làm việc với file Text và Excel
+-  Postgres
+ 
 
 Project được viết bằng Java Core, không sử dụng framework.
 
@@ -24,8 +24,6 @@ Chức năng :
 -  Lưu dữ liệu ra file .xlsx
 -  Load dữ liệu từ file
 
-
-Project sử dụng Apache POI để thao tác với file Excel.
 
 Cách chạy project
 - Bước 1. Compile : javac -cp ".;libs/*" -d bin Main.java ui\*.java service\*.java repository\*.java model\*.java storage\*.jav
