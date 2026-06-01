@@ -21,6 +21,7 @@ Chức năng :
 -  Tìm kiếm sách
 -  Lưu dữ liệu ra file .txt
 -  Lưu dữ liệu ra file .xlsx
+-  Lưu dữ liệu ra database
 -  Load dữ liệu từ file
 
 
