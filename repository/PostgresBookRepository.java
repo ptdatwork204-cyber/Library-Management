@@ -180,7 +180,5 @@ public class PostgresBookRepository
         }
     }
 
-    @Override
-    public void setBooks(List<Book> books) {
-    }
+   
 }

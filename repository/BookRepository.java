@@ -16,7 +16,5 @@ public interface BookRepository {
 
     void update(Book book);
 
-    void setBooks(List<Book> books);
-
    
 }

@@ -1,132 +1,109 @@
 package service;
-import storage.ExcelFileStorage;
+
 import model.Book;
+import model.BookData;
 import repository.BookRepository;
-import storage.StorageStrategy;
-import storage.TextFileStorage;
 
 import java.util.List;
-import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class LibraryServiceImpl implements LibraryService {
 
     private final BookRepository repository;
-    private final Scanner scanner;
-    private final StorageStrategy storage;
-    
 
-    public LibraryServiceImpl(
-        BookRepository repository,
-        StorageStrategy storage
-) 
-    {
-
-    this.repository = repository;
-    this.storage = storage;
-
-    scanner = new Scanner(System.in);
-}
-
-    @Override
-    public void addBook() {
-
-        System.out.print("Enter book id: ");
-        int id = Integer.parseInt(scanner.nextLine());
-
-        if (repository.findById(id) != null) {
-            System.out.println("Book id already exists!");
-            return;
-        }
-
-        System.out.print("Enter title: ");
-        String title = scanner.nextLine();
-
-        System.out.print("Enter author: ");
-        String author = scanner.nextLine();
-
-        repository.add(new Book(id, title, author));
-
-        System.out.println("Added successfully!");
+    public LibraryServiceImpl(BookRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public void viewBooks() {
+    public OperationResult addBook(BookData bookData) {
+
+        // Validate input
+        BookValidator.validateId(bookData.getId());
+        BookValidator.validateTitle(bookData.getTitle());
+        BookValidator.validateAuthor(bookData.getAuthor());
+
+        // Business logic
+        if (repository.findById(bookData.getId()) != null) {
+            return OperationResult.error("Book with ID " + bookData.getId() + " already exists");
+        }
+
+        Book book = bookData.toBook();
+        repository.add(book);
+
+        return OperationResult.ok("Book added successfully");
+    }
+
+    @Override
+    public OperationResult viewAllBooks() {
 
         List<Book> books = repository.findAll();
 
         if (books.isEmpty()) {
-            System.out.println("No books found!");
-            return;
+            return OperationResult.ok("No books found", List.of());
         }
 
-        for (Book b : books) {
-            System.out.println(b);
-        }
+        return OperationResult.ok("Books retrieved successfully", books);
     }
 
     @Override
-    public void updateBook() {
+    public OperationResult updateBook(BookData bookData) {
 
-        System.out.print("Enter id: ");
-        int id = Integer.parseInt(scanner.nextLine());
+        // Validate input
+        BookValidator.validateId(bookData.getId());
+        BookValidator.validateTitle(bookData.getTitle());
+        BookValidator.validateAuthor(bookData.getAuthor());
 
-        Book book = repository.findById(id);
+        // Business logic
+        Book existingBook = repository.findById(bookData.getId());
 
-        if (book == null) {
-            System.out.println("Not found!");
-            return;
+        if (existingBook == null) {
+            return OperationResult.error("Book not found with ID: " + bookData.getId());
         }
 
-        System.out.print("New title: ");
-        book.setTitle(scanner.nextLine());
-
-        System.out.print("New author: ");
-        book.setAuthor(scanner.nextLine());
-
+        Book book = bookData.toBook();
         repository.update(book);
 
-        System.out.println("Updated!");
+        return OperationResult.ok("Book updated successfully");
     }
 
     @Override
-    public void deleteBook() {
+    public OperationResult deleteBook(int id) {
 
-        System.out.print("Enter id: ");
-        int id = Integer.parseInt(scanner.nextLine());
+        // Validate input
+        BookValidator.validateId(id);
+
+        // Business logic
+        Book existingBook = repository.findById(id);
+
+        if (existingBook == null) {
+            return OperationResult.error("Book not found with ID: " + id);
+        }
 
         repository.delete(id);
 
-        System.out.println("Deleted!");
+        return OperationResult.ok("Book deleted successfully");
     }
 
     @Override
-    public void searchBook() {
+    public OperationResult searchBooks(String keyword) {
 
-        System.out.print("Enter keyword: ");
-        String keyword = scanner.nextLine().toLowerCase();
+        // Validate input
+        BookValidator.validateSearchKeyword(keyword);
 
-        for (Book b : repository.findAll()) {
-            if (b.getTitle().toLowerCase().contains(keyword)) {
-                System.out.println(b);
-            }
+        // Business logic
+        String lowerKeyword = keyword.toLowerCase();
+
+        List<Book> results = repository.findAll().stream()
+                .filter(book ->
+                        book.getTitle().toLowerCase().contains(lowerKeyword) ||
+                        book.getAuthor().toLowerCase().contains(lowerKeyword))
+                .collect(Collectors.toList());
+
+        if (results.isEmpty()) {
+            return OperationResult.ok("No books found matching: " + keyword, List.of());
         }
-    }
 
-    @Override
-    public void saveBooks() {
-
-        storage.save(repository.findAll());
-
-        System.out.println("Saved successfully!");
-    }
-
-    @Override
-    public void loadBooks() {
-
-        List<Book> books = storage.load();
-
-        repository.setBooks(books);
-
-        System.out.println("Loaded successfully!");
+        return OperationResult.ok("Found " + results.size() + " book(s)", results);
     }
 }

@@ -1,18 +1,16 @@
 package service;
 
+import model.BookData;
+
 public interface LibraryService {
 
-    void addBook();
+    OperationResult addBook(BookData book);
 
-    void viewBooks();
+    OperationResult viewAllBooks();
 
-    void updateBook();
+    OperationResult updateBook(BookData book);
 
-    void deleteBook();
+    OperationResult deleteBook(int id);
 
-    void searchBook();
-
-    void saveBooks();
-
-    void loadBooks();
+    OperationResult searchBooks(String keyword);
 }
