@@ -1,7 +1,7 @@
 # Library-Management
 Basic console app quản lý thư viện 
 
-Đây là project Java Console App mô phỏng hệ thống quản lý thư viện đơn giản nhằm luyện tập java core. đã được mở rộng để tích hợp PostgreSQL thông qua JDBC, bên cạnh các cơ chế lưu trữ cũ (Memory / Text File / Excel). Hiện tại codebase đang trong trạng thái lai kiến trúc (hybrid) và chưa được refactor lại theo hướng enterprise hoàn chỉnh.
+Đây là project Java Console App mô phỏng hệ thống quản lý thư viện đơn giản nhằm luyện tập java core. đã được mở rộng để tích hợp PostgreSQL thông qua JDBC, bên cạnh các cơ chế lưu trữ cũ (Memory / Text File / Excel). Hiện tại codebase đang trong trạng thái lai kiến trúc (hybrid) và chưa được tinh chỉnh lại một cách chỉn chu (rất lộn xộn ><).
 
 -  OOP
 -  CRUD
@@ -42,14 +42,14 @@ Note:
 -  Sửa lại logic của save/load để chỉ cần chọn kiểu lưu data 1 lần và data sẽ tự động load theo lựa chọn
 -  Áp dụng 1 số SOLID principle dù vẫn chưa ok lắm
 -  Đã thêm tầng lưu trữ dữ liệu sử dụng JDBC:
-  ++ database/DBConnection.java
-  ++ repository/PostgresBookRepository.java
+- database/DBConnection.java
+- repository/PostgresBookRepository.java
 - Thêm thư viện JDBC postgresql-42.7.11.jar vào thư mục libs
 - Thay đổi runtime behavior
-+ Khi chọn chế độ PostgreSQL:
-+ Hệ thống sử dụng PostgresBookRepository
-+ Dữ liệu được lưu trực tiếp xuống database
-+ Không còn phụ thuộc vào in-memory storage cho persistence chính (mặc dù tính năng vẫn tồn tại)
+- Khi chọn chế độ PostgreSQL:
+- Hệ thống sử dụng PostgresBookRepository
+- Dữ liệu được lưu trực tiếp xuống database
+- Không còn phụ thuộc vào in-memory storage cho persistence chính (mặc dù tính năng vẫn tồn tại)
 
 ---
 # Vấn đề:
@@ -70,7 +70,7 @@ Với PostgreSQL thì không có ý nghĩa thực tế (implement dạng no-op)
 
 
 
-4. UI vẫn giữ lựa chọn storage cũ
+UI vẫn giữ lựa chọn storage cũ
 -Menu hiện tại:
 
 Memory
