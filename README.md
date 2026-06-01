@@ -5,11 +5,8 @@ Basic console app quản lý thư viện
 
 -  OOP
 -  CRUD
-<<<<<<< HEAD
 -  MVC structure (not quite lol)
-=======
 -  MVC structure
->>>>>>> 895f4c1c9dc940cc1192967f8f339c0b7e23acd6
 -  File I/O
 -  Interface
 -  Strategy Pattern
@@ -31,27 +28,22 @@ Chức năng :
 Project sử dụng Apache POI để thao tác với file Excel.
 
 Cách chạy project
-Bước 1. Compile : javac -cp ".;libs/*" -d bin Main.java ui\*.java service\*.java repository\*.java model\*.java storage\*.java
-<<<<<<< HEAD
-
-=======
->>>>>>> 895f4c1c9dc940cc1192967f8f339c0b7e23acd6
-Bước 2. Chạy : java -cp "bin;libs/*" Main
+- Bước 1. Compile : javac -cp ".;libs/*" -d bin Main.java ui\*.java service\*.java repository\*.java model\*.java storage\*.jav
+- Bước 2. Chạy : java -cp "bin;libs/*" Main
 
 Note: 
 -  Dữ liệu sẽ mất khi tắt chương trình nếu chưa save.
 -  File Excel yêu cầu Apache POI.
-<<<<<<< HEAD
+
 
 
 ---
 # Update 
--  Sửa lại logic của save/load để chỉ cần chọn kiểu lưu data 1 lần và data sẽ tự động load theo lựa chọn
+-  Đã thêm tầng lưu trữ dữ liệu sử dụng JDBC:
 -  Áp dụng 1 số SOLID principle dù vẫn chưa ok lắm
 
 ---
 # Vấn đề:
-- Hiện tại service layer (LibraryServiceImpl vẫn chứa scanner và xử lý println) đang làm cả business logic lẫn console input/output, trong khi input/output nên thuộc UI layer
-- LibraryMenu hiện vẫn đang thực hiện nhiều trách nhiệm như hiển thị menu, chọn storage, tạo dependency và khởi tạo flow  
-=======
->>>>>>> 895f4c1c9dc940cc1192967f8f339c0b7e23acd6
+- Hiện tại service layer (LibraryServiceImpl vẫn chứa scanner và xử lý println) đang làm cả business logic lẫn console input/output, trong khi input/output nên thuộc UI layer (đã fix)
+- LibraryMenu hiện vẫn đang thực hiện nhiều trách nhiệm như hiển thị menu, chọn storage, tạo dependency và khởi tạo flow  (đã fix)
+
