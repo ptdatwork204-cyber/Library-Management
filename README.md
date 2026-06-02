@@ -59,12 +59,5 @@ NOTE
 
 
 
-UI vẫn giữ lựa chọn storage cũ
--Menu hiện tại:
-
-Memory
-Text File
-Excel File
-PostgreSQL (mới)
 
 
