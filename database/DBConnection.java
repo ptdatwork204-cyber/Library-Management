@@ -20,10 +20,29 @@ public final class DBConnection {
     public static Connection getConnection()
             throws SQLException {
 
-        return DriverManager.getConnection(
-                URL,
-                USER,
-                PASSWORD
-        );
+        // Force UTF-8 encoding - build proper URL
+        String baseUrl = URL;
+        if (baseUrl == null) {
+            throw new IllegalStateException("DB_URL environment variable not set");
+        }
+
+        // Remove any existing characterEncoding to avoid duplicates
+        baseUrl = baseUrl.replaceAll("[?&]characterEncoding=[^&]*", "");
+        baseUrl = baseUrl.replaceAll("[?&]stringtype=[^&]*", "");
+
+        // Append encoding params
+        String fullUrl = baseUrl + (baseUrl.contains("?") ? "&" : "?")
+                + "characterEncoding=UTF-8"
+                + "&stringtype=unspecified"
+                + "&options=-c%20client_encoding=utf8";
+
+        Connection conn = DriverManager.getConnection(fullUrl, USER, PASSWORD);
+
+        // Double-check: set session encoding
+        try (var stmt = conn.createStatement()) {
+            stmt.execute("SET client_encoding = 'UTF8'");
+        }
+
+        return conn;
     }
 }

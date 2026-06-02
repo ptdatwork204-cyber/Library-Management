@@ -91,19 +91,29 @@ public class LibraryServiceImpl implements LibraryService {
         // Validate input
         BookValidator.validateSearchKeyword(keyword);
 
-        // Business logic
-        String lowerKeyword = keyword.toLowerCase();
-
-        List<Book> results = repository.findAll().stream()
-                .filter(book ->
-                        book.getTitle().toLowerCase().contains(lowerKeyword) ||
-                        book.getAuthor().toLowerCase().contains(lowerKeyword))
-                .collect(Collectors.toList());
+        // Business logic - use PostgreSQL Full Text Search
+        List<Book> results = repository.searchByKeyword(keyword);
 
         if (results.isEmpty()) {
             return OperationResult.ok("No books found matching: " + keyword, List.of());
         }
 
         return OperationResult.ok("Found " + results.size() + " book(s)", results);
+    }
+
+    @Override
+    public OperationResult searchBookById(int id) {
+
+        // Validate input
+        BookValidator.validateId(id);
+
+        // Business logic
+        Book book = repository.findById(id);
+
+        if (book == null) {
+            return OperationResult.error("Book not found with ID: " + id);
+        }
+
+        return OperationResult.ok("Book found", book);
     }
 }

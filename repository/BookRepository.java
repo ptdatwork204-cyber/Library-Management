@@ -16,5 +16,5 @@ public interface BookRepository {
 
     void update(Book book);
 
-   
+    List<Book> searchByKeyword(String keyword);
 }

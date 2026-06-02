@@ -13,4 +13,6 @@ public interface LibraryService {
     OperationResult deleteBook(int id);
 
     OperationResult searchBooks(String keyword);
+
+    OperationResult searchBookById(int id);
 }

@@ -94,27 +94,71 @@ public class LibraryMenu {
 
     private void addBook() {
 
-        try {
-            System.out.print("Enter book id: ");
-            int id = readPositiveInt();
+    try {
 
-            System.out.print("Enter title: ");
-            String title = scanner.nextLine().trim();
+        System.out.print("Enter book id: ");
+        int id = readPositiveInt();
 
-            System.out.print("Enter author: ");
-            String author = scanner.nextLine().trim();
+        System.out.print("Enter title: ");
+        String title = scanner.nextLine().trim();
 
-            BookData bookData = new BookData(id, title, author);
-            OperationResult result = service.addBook(bookData);
+        System.out.println("\n===== DEBUG TITLE =====");
+        System.out.println("Value: " + title);
 
-            System.out.println(result.getMessage());
-
-        } catch (ValidationException e) {
-            System.out.println("Validation error: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid ID format. Please enter a number.");
+        System.out.print("HEX: ");
+        for (char c : title.toCharArray()) {
+            System.out.print(
+                    Integer.toHexString(c)
+                            + " "
+            );
         }
+        System.out.println();
+
+        System.out.print("\nEnter author: ");
+        String author = scanner.nextLine().trim();
+
+        System.out.println("\n===== DEBUG AUTHOR =====");
+        System.out.println("Value: " + author);
+
+        System.out.print("HEX: ");
+        for (char c : author.toCharArray()) {
+            System.out.print(
+                    Integer.toHexString(c)
+                            + " "
+            );
+        }
+        System.out.println();
+
+        System.out.println("\n========================");
+
+        BookData bookData =
+                new BookData(
+                        id,
+                        title,
+                        author
+                );
+
+        OperationResult result =
+                service.addBook(bookData);
+
+        System.out.println(
+                result.getMessage()
+        );
+
+    } catch (ValidationException e) {
+
+        System.out.println(
+                "Validation error: "
+                        + e.getMessage()
+        );
+
+    } catch (NumberFormatException e) {
+
+        System.out.println(
+                "Invalid ID format. Please enter a number."
+        );
     }
+}
 
     private void viewBooks() {
 
@@ -180,6 +224,52 @@ public class LibraryMenu {
     }
 
     private void searchBooks() {
+
+        System.out.println("\n===== SEARCH BOOKS =====");
+        System.out.println("1. Search by ID");
+        System.out.println("2. Search by keyword (full-text)");
+        System.out.println("0. Back");
+        System.out.print("Choose: ");
+
+        int choice = readChoice();
+
+        switch (choice) {
+            case 1:
+                searchById();
+                break;
+            case 2:
+                searchByKeyword();
+                break;
+            case 0:
+                return;
+            default:
+                System.out.println("Invalid choice!");
+        }
+    }
+
+    private void searchById() {
+
+        try {
+            System.out.print("Enter book id: ");
+            int id = readPositiveInt();
+
+            OperationResult result = service.searchBookById(id);
+
+            if (result.isSuccess()) {
+                System.out.println(result.getMessage());
+                System.out.println(result.getData());
+            } else {
+                System.out.println(result.getMessage());
+            }
+
+        } catch (ValidationException e) {
+            System.out.println("Validation error: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid ID format. Please enter a number.");
+        }
+    }
+
+    private void searchByKeyword() {
 
         try {
             System.out.print("Enter keyword: ");
