@@ -30,6 +30,8 @@ Cách chạy project
 - Bước 1. Compile : javac -cp ".;libs/*" -d bin Main.java ui\*.java service\*.java repository\*.java model\*.java storage\*.jav
 - Bước 2. Chạy : java -cp "bin;libs/*" Main
 
+- Hoặc chạy file run.bat cho nhanh (no virus trust 👍)
+
 ---
 # Update 
 -  Đã thêm tầng lưu trữ dữ liệu sử dụng JDBC:
