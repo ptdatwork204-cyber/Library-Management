@@ -1,1 +1,3 @@
-CRUD hoạt động bình thường. đã test qua Thunderclient
+- CRUD hoạt động bình thường. đã test qua Thunderclient
+- 1 số method ở BookValidator bị thừa. Vẫn sẽ giữ lại BookValidator để sau này scale sẽ cần thêm business logic
+- LibraryServiceImpl.java cũng đang sử dụng method của BookValidator mặc dù các method đã đều được validation annotation giải quyết ở BookData
