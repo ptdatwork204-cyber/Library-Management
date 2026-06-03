@@ -21,8 +21,10 @@ public class BookController {
     }
 
     @GetMapping
-    public ResponseEntity<OperationResult> viewAllBooks() {
-        OperationResult result = libraryService.viewAllBooks();
+    public ResponseEntity<OperationResult> viewAllBooks(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        OperationResult result = libraryService.viewAllBooksPaginated(page, size);
         return ResponseEntity.ok(result);
     }
 
