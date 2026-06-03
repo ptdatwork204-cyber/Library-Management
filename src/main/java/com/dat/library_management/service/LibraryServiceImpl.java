@@ -21,9 +21,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Transactional
     public OperationResult addBook(BookData bookData) {
 
-        // Validate input
-        BookValidator.validateTitle(bookData.getTitle());
-        BookValidator.validateAuthor(bookData.getAuthor());
+        // Validation is handled by Spring annotations (@Valid + @NotBlank in BookData)
 
         // Business logic
         if (bookData.getId() != null && bookRepository.existsById(bookData.getId())) {
@@ -53,9 +51,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Transactional
     public OperationResult updateBook(BookData bookData) {
 
-        // Validate input
-        BookValidator.validateTitle(bookData.getTitle());
-        BookValidator.validateAuthor(bookData.getAuthor());
+        // Validation is handled by Spring annotations (@Valid + @NotBlank in BookData)
 
         // Business logic
         if (!bookRepository.existsById(bookData.getId())) {
@@ -72,8 +68,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Transactional
     public OperationResult deleteBook(int id) {
 
-        // Validate input
-        BookValidator.validateId(id);
+        // Validation is handled by Spring annotations (@Valid in controller)
 
         // Business logic
         if (!bookRepository.existsById(id)) {
@@ -106,8 +101,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Transactional(readOnly = true)
     public OperationResult searchBookById(int id) {
 
-        // Validate input
-        BookValidator.validateId(id);
+        // Validation is handled by Spring annotations (@Valid in controller)
 
         // Business logic
         return bookRepository.findById(id)
